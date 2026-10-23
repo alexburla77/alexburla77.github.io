@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Доставка та оплата — Candle Fires</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8f5f0;
+      --text: #2c2c2c;
+      --muted: #6b6b6b;
+      --accent: #1a1a1a;
+      --cream: #f5f0e8
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: 'Cormorant Garamond', serif
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit
+    }
+
+     /* .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: 0.8s
+    } */
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: none
+    } 
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 20px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #fff;
+      transition: 0.3s
+    }
+
+    header.scrolled {
+      background: rgba(28, 28, 28, 0.95);
+      backdrop-filter: blur(12px);
+      padding: 14px 48px
+    }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600
+    }
+
+    nav.desktop-nav {
+      display: flex;
+      gap: 36px;
+      font-size: 14px
+    }
+
+    nav.desktop-nav a {
+      opacity: 0.9
+    }
+
+    nav.desktop-nav a.active {
+      opacity: 1;
+      font-weight: 500
+    }
+
+    .burger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 24px;
+      height: 18px;
+      background: none;
+      border: none;
+      cursor: pointer
+    }
+
+    .burger span {
+      display: block;
+      height: 2px;
+      width: 100%;
+      background: currentColor;
+      transition: 0.3s
+    }
+
+    .burger.active span:nth-child(1) {
+      transform: translateY(8px) rotate(45deg)
+    }
+
+    .burger.active span:nth-child(2) {
+      opacity: 0
+    }
+
+    .burger.active span:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg)
+    }
+
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 100%;
+      max-width: 360px;
+      height: 100vh;
+      background: #1c1c1c;
+      color: #fff;
+      z-index: 999;
+      padding: 100px 40px;
+      transition: 0.4s;
+      display: flex;
+      flex-direction: column
+    }
+
+    .mobile-menu.open {
+      right: 0
+    }
+
+    .mobile-menu nav {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      font-size: 22px;
+      font-family: 'Cormorant Garamond', serif
+    }
+
+    .mobile-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 998;
+      opacity: 0;
+      visibility: hidden;
+      transition: 0.3s
+    }
+
+    .mobile-overlay.visible {
+      opacity: 1;
+      visibility: visible
+    }
+
+    .page-hero {
+      padding: 160px 48px 80px;
+      background: linear-gradient(135deg, #2a211c, #3d322a);
+      color: #fff;
+      text-align: center
+    }
+
+    .page-hero h1 {
+      font-size: clamp(36px, 5vw, 52px);
+      margin-bottom: 12px
+    }
+
+    .content {
+      padding: 80px 48px;
+      max-width: 900px;
+      margin: 0 auto
+    }
+
+    .content h2 {
+      font-size: 28px;
+      margin: 40px 0 16px
+    }
+
+    .content p,
+    .content li {
+      color: var(--muted);
+      margin-bottom: 12px
+    }
+
+    .content ul {
+      padding-left: 20px;
+      margin-bottom: 20px
+    }
+
+    .info-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 40px
+    }
+
+    .info-card {
+      background: #fff;
+      padding: 28px;
+      border-radius: 4px
+    }
+
+    .info-card h3 {
+      margin-bottom: 12px;
+      font-size: 18px
+    }
+
+    footer {
+      background: #12110f;
+      color: #fff;
+      padding: 48px 48px 28px
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
+      padding-bottom: 36px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1)
+    }
+
+    .footer-nav {
+      display: flex;
+      gap: 32px;
+      font-size: 14px;
+      opacity: 0.85;
+      flex-wrap: wrap
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 24px;
+      font-size: 13px;
+      opacity: 0.5;
+      flex-wrap: wrap
+    }
+
+    @media(max-width:900px) {
+      header {
+        padding: 16px 24px
+      }
+
+      nav.desktop-nav {
+        display: none
+      }
+
+      .burger {
+        display: flex
+      }
+
+      .page-hero,
+      .content,
+      footer {
+        padding-left: 24px;
+        padding-right: 24px
+      }
+
+      .info-cards {
+        grid-template-columns: 1fr
+      }
+
+      .footer-top {
+        flex-direction: column;
+        text-align: center
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header id="header">
+    <a href="index.html" class="logo">Candle Fires</a>
+    <nav class="desktop-nav">
+      <a href="index.html">Головна</a><a href="catalog.html">Каталог</a><a href="about.html">Про нас</a><a
+        href="delivery.html" class="active">Доставка та оплата</a><a href="contacts.html">Контакти</a>
+    </nav>
+    <button class="burger" id="burger"><span></span><span></span><span></span></button>
+  </header>
+  <div class="mobile-overlay" id="overlay"></div>
+  <div class="mobile-menu" id="mobileMenu">
+    <nav><a href="index.html">Головна</a><a href="catalog.html">Каталог</a><a href="about.html">Про нас</a><a
+        href="delivery.html">Доставка та оплата</a><a href="contacts.html">Контакти</a></nav>
+  </div>
+
+  <section class="page-hero">
+    <h1 class="fade-up">Доставка та оплата</h1>
+    <p class="fade-up">Все просто і прозоро</p>
+  </section>
+
+  <section class="content">
+    <div class="fade-up">
+      <h2>Доставка</h2>
+      <p>Ми відправляємо замовлення по всій Україні.</p>
+      <ul>
+        <li><strong>Нова Пошта</strong> — 1–3 робочі дні</li>
+        <li><strong>Укрпошта</strong> — 3–7 робочих днів</li>
+        <li><strong>Самовивіз</strong> — з майстерні в Києві (за домовленістю)</li>
+      </ul>
+      <p>Вартість доставки розраховується перевізником і оплачується при отриманні (або за тарифами перевізника).</p>
+      <p>Безкоштовна доставка Новою Поштою при замовленні від <strong>1500 грн</strong>.</p>
+
+      <h2>Оплата</h2>
+      <ul>
+        <li>Оплата карткою онлайн (LiqPay / WayForPay)</li>
+        <li>Оплата при отриманні (накладений платіж)</li>
+        <li>Переказ на банківську карту</li>
+      </ul>
+
+      <div class="info-cards">
+        <div class="info-card">
+          <h3>Терміни виготовлення</h3>
+          <p>Готові свічки — відправка протягом 1–2 днів. Кастомні замовлення — 3–7 днів.</p>
+        </div>
+        <div class="info-card">
+          <h3>Повернення</h3>
+          <p>Якщо товар пошкоджений під час доставки — ми замінимо його за свій рахунок. Зв’яжіться з нами протягом 3
+            днів.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-top">
+      <a href="index.html" class="logo">Candle Fires</a>
+      <div class="footer-nav"><a href="index.html">Головна</a><a href="catalog.html">Каталог</a><a href="about.html">Про
+          нас</a><a href="delivery.html">Доставка та оплата</a><a href="contacts.html">Контакти</a></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 Candle Fires</span><span>Створено з любов'ю ♥</span></div>
+  </footer>
+  <script>
+    const b = document.getElementById('burger'), m = document.getElementById('mobileMenu'), o = document.getElementById('overlay');
+    function t() { b.classList.toggle('active'); m.classList.toggle('open'); o.classList.toggle('visible') }
+    b.onclick = t; o.onclick = t;
+    window.onscroll = () => document.getElementById('header').classList.toggle('scrolled', scrollY > 80);
+    new IntersectionObserver(e => e.forEach(i => i.isIntersecting && i.target.classList.add('visible')), { threshold: 0.15 }).observe(...document.querySelectorAll('.fade-up'));
+  </script>
+</body>
+
+</html>
